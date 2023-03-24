@@ -48,6 +48,7 @@ namespace ClinicService
 
 
             app.MapControllers();
+            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<ClinicService.Services.Impl.ClinicService>();
