@@ -1,4 +1,4 @@
-
+using ClinicService.Services.Impl;
 using ClinicService.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,13 +12,13 @@ namespace ClinicService
 
             // Add services to the container.
 
-            #region Config EFCore
+            builder.Services.AddGrpc();
 
+            #region Config EFCore
             builder.Services.AddDbContext<ClinicServiceDbContext>(opt =>
             {
                 opt.UseSqlServer(builder.Configuration["Settings:DatabaseOptons:ConnectionString"]);
             });
-
             #endregion
 
             builder.Services.AddControllers();
@@ -39,7 +39,10 @@ namespace ClinicService
 
 
             app.MapControllers();
-
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<ClinicService.Services.Impl.ClinicService>();
+            });
             app.Run();
         }
     }
